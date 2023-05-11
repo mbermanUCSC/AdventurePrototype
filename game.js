@@ -1,6 +1,6 @@
 class CityScene extends AdventureScene {
     constructor() {
-        super("cityScene", "First Room");
+        super("cityScene", "Main City");
     }
 
     preload() {
@@ -8,95 +8,36 @@ class CityScene extends AdventureScene {
     }
 
     onEnter() {
-        super.onEnter();
         let cityBackground = this.add.image(0, 0, 'cityBackground').setOrigin(0, 0);
-        cityBackground.displayWidth = this.sys.game.config.width;
+        cityBackground.displayWidth = this.sys.game.config.width - 500
         cityBackground.displayHeight = this.sys.game.config.height;
 
-        let alley = this.add.text(this.w * 0.7, this.w * 0.47, "🖲️>")
+        let sidewalk = this.add.text(this.w * 0.09, this.w * 0.4, "🏘️ Sidewalk")
             .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
             .setInteractive()
-            .on('pointerover', () => this.showMessage("It's a nice key."))
+            .on('pointerover', () => this.showMessage("Go deeper into the city?"))
             .on('pointerdown', () => {
-                alley.setVisible(false);
+                this.showMessage("*walking*");
+                this.gotoScene('sidewalkScene');
+            });
+
+        let alley = this.add.text(this.w * 0.44, this.w * 0.44, "🌃 Alley")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Go into the alley?"))
+            .on('pointerdown', () => {
+                this.showMessage("*walking*");
                 this.gotoScene('alleyScene');
             });
 
-        let sidewalk = this.add.text(this.w * 0.2, this.w * 0.47, "🖲️^")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("It's a nice key."))
-            .on('pointerdown', () => {
-                alley.setVisible(false);
-                this.gotoScene('sidewalkScene');
-            });
-    }
-}
-
-class AlleyScene extends AdventureScene {
-    constructor() {
-        super("alleyScene", "Second Room");
-    }
-
-    preload() {
-        this.load.image('alleyBackground', 'assets/alley.png');
-    }
-
-    onEnter() {
-        super.onEnter();
-        let alleyBackground = this.add.image(0, 0, 'alleyBackground').setOrigin(0, 0);
-        alleyBackground.displayWidth = this.sys.game.config.width;
-        alleyBackground.displayHeight = this.sys.game.config.height;
-
-        let sidewalk = this.add.text(this.w * 0.2, this.w * 0.5, "<🖲")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("It's a nice key."))
-            .on('pointerdown', () => {
-                sidewalk.setVisible(false);
-                this.gotoScene('cityScene');
-            });
-
-        // Add invisible interactive area over the trash can
-        let trashCanArea = this.add.zone(this.w * 0.87, this.h * 0.75, this.w * 0.125, this.h * 0.25).setInteractive();
-        trashCanArea.on('pointerdown', () => this.gotoScene('pannelScene'));
-    }
-}
-
-class PannelScene extends AdventureScene {
-    constructor() {
-        super("pannelScene", "Third Room");
-    }
-
-    preload() {
-        this.load.image('noKeyBackground', 'assets/noKey.png');
-        this.load.image('keyBackground', 'assets/key.png');
-    }
-
-    onEnter() {
-        if (!this.hasItem('key')) {
-            let pannelBackground = this.add.image(0, 0, 'noKeyBackground').setOrigin(0, 0);
-        }
-        else{
-            let pannelBackground = this.add.image(0, 0, 'keyBackground').setOrigin(0, 0);
-        }
-            sidewalkBackground.displayWidth = this.sys.game.config.width;
-            sidewalkBackground.displayHeight = this.sys.game.config.height;
-
-        let city = this.add.text(this.w * 0.1, this.w * 0.47, "<🖲️")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("It's a nice key."))
-            .on('pointerdown', () => {
-                city.setVisible(false);
-                this.gotoScene('cityScene');
-            });
     }
 }
 
 class SidewalkScene extends AdventureScene {
     constructor() {
-        super("sidewalkScene", "Fourth Room");
+        super("sidewalkScene", "Sidewalk");
     }
 
     preload() {
@@ -105,27 +46,26 @@ class SidewalkScene extends AdventureScene {
 
     onEnter() {
         let sidewalkBackground = this.add.image(0, 0, 'sidewalkBackground').setOrigin(0, 0);
-        sidewalkBackground.displayWidth = this.sys.game.config.width;
+        sidewalkBackground.displayWidth = this.sys.game.config.width - 500
         sidewalkBackground.displayHeight = this.sys.game.config.height;
 
-        let city = this.add.text(this.w * 0.1, this.w * 0.47, "<🖲️")
+        let sidewalk = this.add.text(this.w * 0.03, this.w * 0.3, "🌃 City")
             .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
             .setInteractive()
-            .on('pointerover', () => this.showMessage("It's a nice key."))
+            .on('pointerover', () => this.showMessage("Go back to the city?"))
             .on('pointerdown', () => {
-                city.setVisible(false);
+                this.showMessage("*walking*");
                 this.gotoScene('cityScene');
             });
-
-        // Check if the key has already been picked up
         if (!this.hasItem('key')) {
-            let key = this.add.text(this.w * 0.2, this.w * 0.2, "🔑")
+            let key = this.add.text(this.w * 0.17, this.w * 0.2, "🔑")
                 .setFontSize(this.s * 2)
                 .setInteractive()
                 .on('pointerover', () => this.showMessage("It's a nice key."))
                 .on('pointerdown', () => {
                     this.showMessage("You pick up the key.");
-                    this.gainItem('key aquired');
+                    this.gainItem('key');
                     this.tweens.add({
                         targets: key,
                         y: `-=${2 * this.s}`,
@@ -136,14 +76,133 @@ class SidewalkScene extends AdventureScene {
                 });
         }
     }
+}
 
 
-    // Check if the player has the item
-    hasItem(item) {
-        return this.inventory.includes(item);
+class AlleyScene extends AdventureScene {
+    constructor() {
+        super("alleyScene", "Alley");
+    }
+
+    preload() {
+        this.load.image('alleyBackground', 'assets/alley.png');
+    }
+
+    onEnter() {
+        let alleyBackground = this.add.image(0, 0, 'alleyBackground').setOrigin(0, 0);
+        alleyBackground.displayWidth = this.sys.game.config.width - 500
+        alleyBackground.displayHeight = this.sys.game.config.height;
+
+        let city = this.add.text(this.w * 0.03, this.w * 0.3, "🌃 City")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Go back to the city?"))
+            .on('pointerdown', () => {
+                this.showMessage("*walking*");
+                this.gotoScene('cityScene');
+            });
+        let trash1 = this.add.text(this.w * 0.04, this.w * 0.44, "trash")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Maybe theres something behind?"))
+            .on('pointerdown', () => {
+                this.showMessage("*nothing*");
+            });
+        let trash2 = this.add.text(this.w * 0.24, this.w * 0.44, "trash")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Maybe theres something behind?"))
+            .on('pointerdown', () => {
+                this.showMessage("*nothing*");
+            });
+        let trash3 = this.add.text(this.w * 0.45, this.w * 0.44, "trash")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Maybe theres something behind?"))
+            .on('pointerdown', () => {
+                this.showMessage("*nothing*");
+            });
+        let trash4 = this.add.text(this.w * 0.66, this.w * 0.44, "trash")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Maybe theres something behind?"))
+            .on('pointerdown', () => {
+                this.showMessage("*something*");
+                if (!this.hasItem('key')) {
+                    this.gotoScene('noKeyPannelScene');
+                }
+                else{
+                   this.gotoScene('keyPannelScene'); 
+                }
+            })
     }
 }
 
+class NoKeyPannelScene extends AdventureScene {
+    constructor() {
+        super("noKeyPannelScene", "Control Pannel");
+    }
+
+    preload() {
+        this.load.image('pannelBackground', 'assets/noKey.png');
+    }
+
+    onEnter() {
+        let pannelBackground = this.add.image(0, 0, 'pannelBackground').setOrigin(0, 0);
+        pannelBackground.displayWidth = this.sys.game.config.width - 500
+        pannelBackground.displayHeight = this.sys.game.config.height;
+
+        let alley = this.add.text(this.w * 0.09, this.w * 0.09, "🗑️ Alley")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Go back to the alley?"))
+            .on('pointerdown', () => {
+                this.showMessage("*walking*");
+                this.gotoScene('alleyScene');
+            })
+    }
+}
+
+class KeyPannelScene extends AdventureScene {
+    constructor() {
+        super("keyPannelScene", "Control Pannel(KEY)");
+    }
+
+    preload() {
+        this.load.image('pannelBackground', 'assets/key.png');
+    }
+
+    onEnter() {
+        let pannelBackground = this.add.image(0, 0, 'pannelBackground').setOrigin(0, 0);
+        pannelBackground.displayWidth = this.sys.game.config.width - 500
+        pannelBackground.displayHeight = this.sys.game.config.height;
+
+        let alley = this.add.text(this.w * 0.09, this.w * 0.09, "🗑️ Alley")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Go back to the alley?"))
+            .on('pointerdown', () => {
+                this.showMessage("*walking*");
+                this.gotoScene('alleyScene');
+            });
+        let button = this.add.text(this.w * 0.26, this.w * 0.26, "🔘")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("PRESS!"))
+            .on('pointerdown', () => {
+                this.showMessage("*humming*");
+                this.gotoScene('outro');
+            })
+    }
+}
 
 class Intro extends Phaser.Scene {
     constructor() {
@@ -194,7 +253,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, CityScene, AlleyScene, PannelScene, SidewalkScene, Outro],
+    scene: [Intro, CityScene, SidewalkScene, AlleyScene, NoKeyPannelScene, KeyPannelScene, Outro],
     title: "Adventure Game",
 });
 
