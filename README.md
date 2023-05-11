@@ -14,6 +14,7 @@ Experience requirements:
 - **Many objects have `pointerdown` effects**: Trash cans in AlleyScene, button in the Pannel scenes 
 - **Some objects are themselves animated**: Key, 
 
+**TODO : Animate more objects (cp button), modify adventure.js 
 Asset sources:
 I began prototyping the background scene art for my adventure game with Open AI’s DALL-E (https://labs.openai.com).
 I began to make some art modeled after the images it gave me, but found they lacked a lot of the artifacting the AI images did. I actually preferred the messy look, so I thought it would be cool to use it as a tool somehow. What I ended up doing was partially creating scenes, and had the AI fill in some of the blank space. I think this created a really cool effect for my game art, and wanted to credit the tool, along with providing some of the prompts I gave to help fill in the art. 
