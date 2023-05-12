@@ -49,6 +49,23 @@ class AdventureScene extends Phaser.Scene {
                 }
             });
 
+        this.add.text(this.w-14*this.s, this.h-10*this.s, "Press H for help.")
+            .setStyle({ fontSize: `${1 * this.s}px` })
+
+        this.helpText = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
+        .setStyle({ fontSize: `${1 * this.s}px`, color: '#eea' })
+        .setText("Press H for help")
+        .setAlpha(0);
+
+        this.input.keyboard.on('keydown-H', () => {
+            this.helpText.setAlpha(1);
+            this.helpText.setText("Find the control pannel and turn off \nthe lights!");
+         });
+
+        this.input.keyboard.on('keyup-H', () => {
+            this.helpText.setAlpha(0);
+        });
+
         this.onEnter();
 
     }
@@ -143,6 +160,12 @@ class AdventureScene extends Phaser.Scene {
             this.scene.start(key, { inventory: this.inventory });
         });
     }
+
+    playSound(key) {
+        let sound = this.sound.add(key);
+        sound.play();
+    }
+
 
     onEnter() {
         console.warn('This AdventureScene did not implement onEnter():', this.constructor.name);

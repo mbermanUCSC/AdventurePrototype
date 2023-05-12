@@ -42,6 +42,8 @@ class SidewalkScene extends AdventureScene {
 
     preload() {
         this.load.image('sidewalkBackground', 'assets/sidewalk.png');
+        this.load.audio('keyChime', 'assets/audio/keyChime.mp3');
+
     }
 
     onEnter() {
@@ -66,6 +68,7 @@ class SidewalkScene extends AdventureScene {
                 .on('pointerdown', () => {
                     this.showMessage("You pick up the key.");
                     this.gainItem('key');
+                    this.playSound('keyChime');
                     this.tweens.add({
                         targets: key,
                         y: `-=${2 * this.s}`,
@@ -149,11 +152,11 @@ class NoKeyPannelScene extends AdventureScene {
     }
 
     preload() {
-        this.load.image('pannelBackground', 'assets/noKey.png');
+        this.load.image('noKeyPannelBackground', 'assets/noKey.png');
     }
 
     onEnter() {
-        let pannelBackground = this.add.image(0, 0, 'pannelBackground').setOrigin(0, 0);
+        let pannelBackground = this.add.image(0, 0, 'noKeyPannelBackground').setOrigin(0, 0);
         pannelBackground.displayWidth = this.sys.game.config.width - 500
         pannelBackground.displayHeight = this.sys.game.config.height;
 
@@ -165,6 +168,14 @@ class NoKeyPannelScene extends AdventureScene {
             .on('pointerdown', () => {
                 this.showMessage("*walking*");
                 this.gotoScene('alleyScene');
+            });
+        let button = this.add.text(this.w * 0.26, this.w * 0.26, "🔘")
+            .setFontSize(this.s * 2)
+            .setDepth(1) // May not need
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("PRESS!"))
+            .on('pointerdown', () => {
+                this.showMessage("It looks like you'll need a key for this.");
             })
     }
 }
@@ -199,8 +210,16 @@ class KeyPannelScene extends AdventureScene {
             .on('pointerover', () => this.showMessage("PRESS!"))
             .on('pointerdown', () => {
                 this.showMessage("*humming*");
-                this.gotoScene('outro');
-            })
+
+                // Add a scaling animation to the button
+                this.tweens.add({
+                    targets: button,
+                    scale: { from: 1, to: 1.5 }, 
+                    duration: 100,  // in ms
+                    yoyo: true,  
+                    onComplete: () => this.gotoScene('outro') 
+                });
+            });
     }
 }
 
