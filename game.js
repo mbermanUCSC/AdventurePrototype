@@ -258,8 +258,17 @@ class Outro extends Phaser.Scene {
         super('outro');
     }
 
+    preload() {
+        this.load.image('outBackground', 'assets/cityBW.png');
+    }
+
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
+        let background = this.add.image(0, 0, 'outBackground').setOrigin(0, 0);
+    background.displayWidth = this.game.config.width;
+    background.displayHeight = this.game.config.height;
+
+
+        this.add.text(50, 50, "What happened to the lights!!!").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
